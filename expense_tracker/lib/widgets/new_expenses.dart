@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:expense_tracker/models/expense.dart';
 
 class NewExpense extends StatefulWidget {
-  const NewExpense({super.key});
+  const NewExpense({super.key, required this.onAddExpense});
+
+  final void Function(Expense expense) onAddExpense;
+
   @override
   State<NewExpense> createState() {
     // TODO: implement createState
@@ -40,7 +43,56 @@ class _NewExpense extends State<NewExpense> {
     //and Flutter should therefore basically wait for that value before it stores it in that variable.
   }
 
-  void _submitExpenseDate() {}
+  void _submitExpenseDate() {
+    final enteredAmount = double.tryParse(_amountController.text);
+
+    //tryParse :- double? tryParse(String source)
+    //var value = double.tryParse('3.14'); // 3.14
+    // value = double.tryParse('  3.14 \xA0'); // 3.14
+    // value = double.tryParse('0.'); // 0.0
+    // value = double.tryParse('.0'); // 0.0
+    // value = double.tryParse('-1.e3'); // -1000.0
+    // value = double.tryParse('1234E+7'); // 12340000000.0
+    // value = double.tryParse('+.12e-9'); // 1.2e-10
+    // value = double.tryParse('-NaN'); // NaN
+    // value = double.tryParse('0xFF'); // null
+    // value = double.tryParse(double.infinity.toString()); // Infinity
+
+    final amountIsInvalid = enteredAmount == null || enteredAmount <= 0;
+    if (_titleController.text.trim().isEmpty ||
+        amountIsInvalid ||
+        _selectedDate == null) {
+      //trim():- If the string contains leading or trailing whitespace,
+      // a new string with no leading and no trailing whitespace is returned
+      showDialog(
+        //showDialog:- which will show some info or error dialogue on the screen. pop-up on the screen.
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text("Invalid input"),
+          content: const Text(
+              "Please make sure a  valid title, amount, date and category was entered"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+              },
+              child: const Text("Okay"),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+
+    widget.onAddExpense(
+      Expense(
+          title: _titleController.text,
+          amount: enteredAmount,
+          date: _selectedDate!,
+          category: _seletedCategory),
+    );
+    Navigator.pop(context);
+  }
 
   @override
   void dispose() {
@@ -72,8 +124,11 @@ class _NewExpense extends State<NewExpense> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    // we can get theamount of space taken by keyboard
+    final keyboardSpace = MediaQuery.of(context).viewInsets.bottom;
+    //viewInserts to adjust UI.
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.fromLTRB(16, 48, 16, keyboardSpace + 16),
       child: Column(
         children: [
           TextField(
@@ -154,7 +209,7 @@ class _NewExpense extends State<NewExpense> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  _submitExpenseDate;
+                  _submitExpenseDate();
                 },
                 child: const Text("save Expense"),
               ),

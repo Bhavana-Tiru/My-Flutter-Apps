@@ -41,3 +41,24 @@ class Expense {
   }
   //Getters are basically "computed properties"=>Properties that are dynamically derived, based on other class properties.
 }
+
+class ExpenseBucket {
+  const ExpenseBucket({required this.category, required this.expenses});
+  ExpenseBucket.forCategory(List<Expense> allExpenses, this.category)
+      : expenses = allExpenses
+            .where((expense) => expense.category == category)
+            .toList();
+  //For adding additional constructor in classes we use:  class name(ExpenseBucket).forCategory(); eg:EdgeInserts.all(_)
+  // where is used to filiter the list it return a function as argument.
+  final Category category;
+  final List<Expense> expenses;
+
+  double get totalExpenses {
+    double sum = 0;
+
+    for (final expense in expenses) {
+      sum += expense.amount; //sum=sum+expense.amount
+    }
+    return sum;
+  }
+}
