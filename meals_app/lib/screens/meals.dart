@@ -5,15 +5,14 @@ import 'package:meals_app/widgets/meal_iteam.dart';
 import 'package:meals_app/widgets/steps.dart';
 
 class MealScreen extends StatelessWidget {
-  const MealScreen(
-      {super.key,
-      required this.meals,
-      this.title,
-      required this.onToggleFavorite});
+  const MealScreen({
+    super.key,
+    required this.meals,
+    this.title,
+  });
 
   final String? title;
   final List<Meal> meals;
-  final void Function(Meal meal) onToggleFavorite;
 
   void selectedImg(BuildContext context, Meal meal) {
     // final imgdes=  dummyMeals.where((meal) => meal.categories.contains(meal.id))
@@ -23,7 +22,6 @@ class MealScreen extends StatelessWidget {
       MaterialPageRoute(
         builder: (ctx) => Steps(
           meal: meal,
-          onToggleFavorite: onToggleFavorite,
         ),
       ),
     );

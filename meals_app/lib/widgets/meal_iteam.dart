@@ -48,12 +48,21 @@ class MealItem extends StatelessWidget {
 
         child: Stack(
           children: [
-            FadeInImage(
-              placeholder: MemoryImage(kTransparentImage),
-              image: NetworkImage(meal.imageUrl),
-              fit: BoxFit.cover,
-              height: 200,
-              width: double.infinity,
+            //Hero is used to animate widgets across different widgets.
+            Hero(
+              tag: meal.id,
+              // will be used for identifying a widget on this screen and on the target screen.
+              //It should be a tag that is unique per widget.
+
+              //It should be given again in steps.dart sam by wraping up
+              //the Image with Hero and initializing tag with same meal.id
+              child: FadeInImage(
+                placeholder: MemoryImage(kTransparentImage),
+                image: NetworkImage(meal.imageUrl),
+                fit: BoxFit.cover,
+                height: 200,
+                width: double.infinity,
+              ),
             ),
             // FadeInImage():Creates a widget that displays a [placeholder] while an [image] is loading,
             //then fades-out the placeholder and fades-in the image.
