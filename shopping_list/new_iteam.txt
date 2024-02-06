@@ -1,0 +1,151 @@
+import 'package:flutter/material.dart';
+import 'package:shopping_list/data/categories.dart';
+import 'package:shopping_list/models/category.dart';
+import 'package:shopping_list/models/grocery_item.dart';
+
+class NewIteam extends StatefulWidget {
+  const NewIteam({super.key});
+
+  @override
+  State<NewIteam> createState() {
+    // TODO: implement createState
+    return _NewIteamState();
+  }
+}
+
+class _NewIteamState extends State<NewIteam> {
+  final _formKey = GlobalKey<FormState>();
+  // Creates a [LabeledGlobalKey], which is a [GlobalKey] with a label used for debugging.
+  //The label is purely for debugging and not used for comparing the identity of the key.
+  var _enteredName = '';
+  var _enteredValue = 1;
+  var _selectedCategory = categories[Categories.vegetables]!;
+
+  void _saveitem() {
+    if (_formKey.currentState!.validate()) {
+      //currentState=FormState, validate()- validators inside of Form
+      _formKey.currentState!.save();
+      Navigator.of(context).pop(GroceryItem(
+          id: DateTime.now().toString(),
+          name: _enteredName,
+          quantity: _enteredValue,
+          category: _selectedCategory)); //to display groceries_list.dart.
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Add a new Iteam'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                // instead of TextField()
+                maxLength: 50,
+                decoration: const InputDecoration(
+                  label: Text("Name"),
+                ),
+                validator: (value) {
+                  if (value == null ||
+                      value.isEmpty ||
+                      value.trim().length <= 1 ||
+                      value.trim().length > 50) {
+                    //trim to remove excess whitespace at the begin and end
+                    return 'Must be between 1 and 50 characters.';
+                  }
+                  return null;
+                },
+
+                onSaved: (value) {
+                  _enteredName = value!;
+                },
+                // allows to add a function which takes String as input(flutter) also returns a string (us).
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      decoration: const InputDecoration(
+                        label: Text('Quantity'),
+                      ),
+                      keyboardType: TextInputType.number,
+                      initialValue: _enteredValue.toString(),
+                      validator: (value) {
+                        if (value == null ||
+                            value.isEmpty ||
+                            int.tryParse(value) == null ||
+                            int.tryParse(value)! <= 0) {
+                          //trim to remove excess whitespace at the begin and end
+                          return 'Must be a valid , positive number';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _enteredValue = int.parse(value!);
+                        // parse will throw an error if it fails to convert the string to number.
+                        //tryParse yields null here in our validator,
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: DropdownButtonFormField(
+                      value: _selectedCategory,
+                      items: [
+                        for (final category in categories.entries)
+                          DropdownMenuItem(
+                            value: category.value,
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 16,
+                                  height: 16,
+                                  color: category.value.color,
+                                ),
+                                const SizedBox(
+                                  width: 6,
+                                ),
+                                Text(category.value.title),
+                              ],
+                            ),
+                          ),
+                      ],
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedCategory = value!;
+                        });
+                      },
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      _formKey.currentState!.reset();
+                    },
+                    child: const Text('Reset'),
+                  ),
+                  ElevatedButton(
+                      onPressed: _saveitem, child: const Text('Add Item')),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -1,0 +1,60 @@
+For adding HTTP to flutter command:
+->flutter pub add http
+
+1.import 'package:http/http.dart' as http;
+as: it tells Dart that all the content
+that's provided by this package should be bundled into,
+you could say an object of this name here(http).
+So in this case, http, but this could be any name
+of your choice.
+
+02. In new_iteam.dart
+final url = Uri.https('flutter-prep-4d881-default-rtdb.firebaseio.com',
+          'shopping-list.json');
+      http.post(
+        url,
+        headers: { //Sends an HTTP POST request with the given headers and body to the given URL.
+          //Map<String, String>
+          'Content-Type': 'application/json',
+        },
+        body: json.encode( //encode: Converts value to a JSON string.
+          {
+            'name': _enteredName,
+            'quantity': _enteredValue,
+            'category': _selectedCategory.title,
+          },
+        ),
+      );
+
+3. Response from backend to flutter:
+List<GroceryItem> _groceryItems = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadItems();
+  }
+  
+void _loadItems() async {
+    final url = Uri.https(
+        'flutter-prep-4d881-default-rtdb.firebaseio.com', 'shopping-list.json');
+    final response = await http.get(url);
+    final Map<String, dynamic> listData = json.decode(response.body);
+    final List<GroceryItem> _loadedItems = [];
+    for (final item in listData.entries) {
+      final category = categories.entries
+          .firstWhere(
+              (catItem) => catItem.value.title == item.value['category'])
+          .value;
+      _loadedItems.add(
+        GroceryItem(
+            id: item.key,
+            name: item.value['name'],
+            quantity: item.value['quantity'],
+            category: category),
+      );
+    }
+    setState(() {
+      _groceryItems = _loadedItems;
+    });
+  }      
