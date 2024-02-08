@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:chat_app/widget/user_image_picker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,6 +24,8 @@ class _AuthScreen extends State<AuthScreen> {
   var _enteredEmail = '';
   var _enteredPassword = '';
   File? _selectedImage;
+  var _isAuthenticating = false;
+  var _enteredUsername = '';
 
   void _submit() async {
     final isValid = _form.currentState!.validate();
@@ -34,6 +37,9 @@ class _AuthScreen extends State<AuthScreen> {
 
     _form.currentState!.save();
     try {
+      setState(() {
+        _isAuthenticating = true;
+      });
       // When using try{} on catch, only exceptions of the
       if (_isLogin) {
         // log users in
@@ -44,13 +50,38 @@ class _AuthScreen extends State<AuthScreen> {
             email: _enteredEmail, password: _enteredPassword);
       } else {
         // sign up
-        final userCredentials = _firebase.createUserWithEmailAndPassword(
+        final userCredentials = await _firebase.createUserWithEmailAndPassword(
             email: _enteredEmail, password: _enteredPassword);
 
-        FirebaseStorage.instance.ref().child('user_images').child('${userCredentials.}.jpg');
+        final storageRef = FirebaseStorage.instance
+            .ref()
+            .child('user_images')
+            .child('${userCredentials.user!.uid}.jpg');
         // we can't store image in email and pswd authentication
         //so we need extra storage to store the img and display it in the UI.
         //for that we use FirebaseStorage.instance.ref() to give acess to Firebase Storage.
+
+        //Uploading image in firebase storage
+        await storageRef.putFile(_selectedImage!);
+        final imageUrl = await storageRef.getDownloadURL();
+        // it gives a url to display that image that waas stored on Firebase.
+        //we are not storing the img in local device we are storing it in some remote machine operated by Firebase.
+
+        //print(imageUrl);
+
+        //Uploading and fetching data in Cloud Firebase.
+        //Firestore works with collections
+        //documents actual data entries.document then in turn
+        //could have more nested collections if you needed to.
+        //set is used for which data is entered in document.
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userCredentials.user!.uid)
+            .set({
+          'username': _enteredUsername,
+          'email': _enteredEmail,
+          'image_url': imageUrl,
+        });
       }
     } on FirebaseAuthException catch (error) {
       //provided type(FirebaseAuthException in this case) will be caught and handled.
@@ -66,6 +97,9 @@ class _AuthScreen extends State<AuthScreen> {
           // ?? if the value is null we should display callback msg
         ),
       );
+      setState(() {
+        _isAuthenticating = false;
+      });
     }
   }
 
@@ -123,6 +157,23 @@ class _AuthScreen extends State<AuthScreen> {
                               _enteredEmail = value!;
                             },
                           ),
+                          if (!_isLogin)
+                            TextFormField(
+                              decoration:
+                                  InputDecoration(labelText: 'Username'),
+                              enableSuggestions: false,
+                              validator: (value) {
+                                if (value == null ||
+                                    value.isEmpty ||
+                                    value.trim().length < 4) {
+                                  return 'Please enter at least 4 characters';
+                                }
+                                return null;
+                              },
+                              onSaved: (value) {
+                                _enteredUsername = value!;
+                              },
+                            ),
                           TextFormField(
                             decoration: const InputDecoration(
                               labelText: 'Password',
@@ -145,24 +196,29 @@ class _AuthScreen extends State<AuthScreen> {
                             },
                           ),
                           const SizedBox(height: 12),
-                          ElevatedButton(
+                          if (_isAuthenticating)
+                            const CircularProgressIndicator(),
+                          if (!_isAuthenticating)
+                            ElevatedButton(
                               onPressed: _submit,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Theme.of(context)
                                     .colorScheme
                                     .primaryContainer,
                               ),
-                              child: Text(_isLogin ? "Login" : 'Sign Up!')),
-                          TextButton(
-                            onPressed: () {
-                              setState(() {
-                                _isLogin = !_isLogin;
-                              });
-                            },
-                            child: Text(_isLogin
-                                ? 'Create an account'
-                                : "I already have an account"),
-                          ),
+                              child: Text(_isLogin ? "Login" : 'Sign Up!'),
+                            ),
+                          if (!_isAuthenticating)
+                            TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  _isLogin = !_isLogin;
+                                });
+                              },
+                              child: Text(_isLogin
+                                  ? 'Create an account'
+                                  : "I already have an account"),
+                            ),
                         ],
                       ),
                     ),
