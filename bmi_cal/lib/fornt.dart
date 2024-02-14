@@ -12,7 +12,9 @@ class MyApp extends StatelessWidget {
       title: 'BMI Cal',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color.fromARGB(255, 227, 211, 186)),
+            seedColor: const Color.fromARGB(255, 234, 223, 206),
+            surface: const Color.fromRGBO(255, 234, 223, 206)),
+        scaffoldBackgroundColor: const Color.fromARGB(255, 234, 223, 206),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'BMI Calculator'),
