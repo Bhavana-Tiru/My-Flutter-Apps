@@ -29,7 +29,7 @@ class _GroceriesListState extends State<GroceriesList> {
 
   void _loadItems() async {
     final url = Uri.https(
-        'flutter-prep-4d881-default-rtdb.firebaseio.com', 'shopping-list.json');
+        'url here', 'shopping-list.json');
     final response = await http.get(url);
 
     // throw Exception('An error occurred!'); ->we we don't have internet connection.
@@ -96,7 +96,7 @@ class _GroceriesListState extends State<GroceriesList> {
     setState(() {
       _groceryItems.remove(item);
     });
-    final url = Uri.https('flutter-prep-4d881-default-rtdb.firebaseio.com',
+    final url = Uri.https('url here',
         'shopping-list/${item.id}.json');
     final response = await http.delete(url);
 
