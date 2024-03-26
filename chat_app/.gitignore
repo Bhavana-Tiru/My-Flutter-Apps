@@ -41,3 +41,8 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+
+# files
+chat_app\lib\screens\auth.dart
+chat_app\lib\firebase_options.dart
