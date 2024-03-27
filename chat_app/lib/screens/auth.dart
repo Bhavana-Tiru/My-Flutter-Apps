@@ -44,8 +44,7 @@ class _AuthScreen extends State<AuthScreen> {
       if (_isLogin) {
         // log users in
 
-        // for checking go to https://console.firebase.google.com/u/0/project/flutter-chat-app-5c322/authentication/providers
-        //to check data we have received
+       
         final userCredentials = await _firebase.signInWithEmailAndPassword(
             email: _enteredEmail, password: _enteredPassword);
       } else {

@@ -35,7 +35,7 @@ class _NewIteamState extends State<NewIteam> {
       _formKey.currentState!.save();
 
       // to send request to Backend
-      final url = Uri.https('flutter-prep-4d881-default-rtdb.firebaseio.com',
+      final url = Uri.https('url here',
           'shopping-list.json');
       final response = await http.post(
         // post-store data in the backend

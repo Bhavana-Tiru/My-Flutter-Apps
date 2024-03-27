@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 
-//for location
-// import 'package:http/http.dart' as http;
-// import 'package:favorite_places/model/place.dart';
+
 
 class LocationInput extends StatefulWidget {
   const LocationInput({super.key});
@@ -58,20 +56,11 @@ class _LocationInput extends State<LocationInput> {
     // final url = Uri.parse(// google geolocation api);
     // final response = await http.get(url);
 
-    // the longitude by accessing locationData.longitude.
-    // And then we can replace this part here,
-    // 40 dot something in front of the comma,
-    // but without replacing the comma with $
-    // and then lat and then the -73 part here
-    // in my case with $lng
-    // and the comma between the two must stay there
-    // don't delete that accidentally.
-    // And then for API key, you can plug in your API key(google map api).
 
     // final resData=json.decode(response.data);
     // final address = resData['results'][0]['formatted_address'];
 
-    // Go to in place.dart
+   
     setState(() {
       // _pickedLoaction =
       //     PlaceLocation(latitude: lat, longitude: lng, address: address,);
