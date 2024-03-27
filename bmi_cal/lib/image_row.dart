@@ -20,8 +20,8 @@ class _RowImage extends State<RowImage> {
 
   @override
   Widget build(BuildContext context) {
-    const img1 = 'assets/images/female2.png';
-    const img2 = 'assets/images/male2.png';
+    const img1 = 'assets/images/women.png';
+    const img2 = 'assets/images/men.png';
     // TODO: implement build
     // Widget screenWidget = const Values();
     // ;
@@ -57,7 +57,7 @@ class _RowImage extends State<RowImage> {
           },
           child: Image.asset(
             img2,
-            width: 54,
+            width: 70,
             height: 350,
           ),
         ),
