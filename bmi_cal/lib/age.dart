@@ -27,7 +27,7 @@ class _AgeState extends State<Age> {
   void initState() {
     super.initState();
     _textFieldController.text =
-        ''; // Initialize the text field value to an empty string
+        '';
     _textFieldController1.text = '';
   }
 
@@ -135,9 +135,6 @@ class _AgeState extends State<Age> {
             labelText: 'Enter your weight here',
           ),
           keyboardType: TextInputType.number,
-          // onSaved: (onvalue) {
-          //   _weightValue = int.parse(onvalue!);
-          // },
           maxLines: 1,
         ),
         const SizedBox(
@@ -199,8 +196,6 @@ class _AgeState extends State<Age> {
                     decoration: BoxDecoration(
                       color: Colors.green,
                       borderRadius: BorderRadius.circular(100),
-                      // border
-                      // color: const Color.fromARGB(255, 166, 160, 160),
                     ),
                     child: IconButton(
                       onPressed: _increment,
