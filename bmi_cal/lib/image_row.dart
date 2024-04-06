@@ -11,24 +11,11 @@ class RowImage extends StatefulWidget {
 }
 
 class _RowImage extends State<RowImage> {
-  // var activeScreen = 'image-screen';
-  // void diffPage() {
-  //   setState(() {
-  //     activeScreen = 'values-screen';
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
     const img1 = 'assets/images/women.png';
     const img2 = 'assets/images/men.png';
-    // TODO: implement build
-    // Widget screenWidget = const Values();
-    // ;
-
-    // if (activeScreen == 'values-screen') {
-    //   screenWidget;
-    // }
 
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -40,7 +27,6 @@ class _RowImage extends State<RowImage> {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const Values()));
           },
-          // shape: Shaped,
           child: Image.asset(
             img1,
             width: 70,
