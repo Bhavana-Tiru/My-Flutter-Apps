@@ -1,0 +1,16 @@
+The useMaterial3: true flag is no longer needed if you're using the latest version of Flutter - because Material 3 is already the default with that.
+
+In addition, instead of adding a dark theme like this:
+
+ThemeData.dark(
+  useMaterial3: true,
+  colorScheme: kColorScheme,
+  cardTheme: ...
+)
+you should add it like this (in the next lecture, when we write that code):
+
+ThemeData.dark().copyWith( // dark() no longer takes any arguments
+  useMaterial3: true,
+  colorScheme: kColorScheme,
+  cardTheme: ...
+)

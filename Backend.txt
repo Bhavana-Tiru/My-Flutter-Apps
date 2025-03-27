@@ -1,0 +1,87 @@
+Apps using HTTP:
+->your Flutter app must be able to communicate with those backend servers to use their services and data.
+And that communication typically happens via HTTP requests.
+
+->we'll use a very simple dummy third-party service
+as a backend, but you will learn how you can then send requests
+to that service to store data there or retrieve data from there. 
+
+->So HTTP is that thing that in the end allows us
+to connect frontend and backend.
+It's in the end a standardized protocol that's used
+for communicating back and forth
+between a frontend and a backend.
+
+->sending a  HTTP request to the backend if it wants something from the backend.
+
+->when a new item is added, you might want to store that
+on a database that's managed by the backend
+and therefore you would then send such a HTTP request
+from the frontend to the backend telling the backend
+that the data should be stored.
+The backend then does its thing,
+it does the thing you want it to do,
+and then ultimately it will send back a response.
+
+->And both request and response are in the end standardized information packages.
+    Flutter to Backend-> Request, Backend to Flutter->Response.
+
+->This HTTP thing is a standardized protocol that in the end
+defines how requests and responses may look like.
+For example, requests typically contain a URL,
+the address of the backend to which the request
+should be sent, an HTTP method that can be picked up
+by the backend to perform different actions
+for different requests with different methods.
+
+        frontend(eg:Flutter):                           Backend(eg., Firebase Server):
+        1. URL(address)            HTTP Request                     1. headers(metadata)
+        2.Method(type)                 ->                 2.Body(data)
+        3.Headers(metadata)            <-                
+        4.Body(data)                HTTP Response
+
+
+Different HTTP Methods:
+1.GET-> Typically used to fetch data.
+2.POST-> used to add new data.
+3.PUT-> used to overwrite data.
+4.Patch-> used to update data.
+5.DELETE-> used to delete the data.
+
+
+->You could also add headers to your outgoing requests
+which in the end is just a bunch
+of metadata that could be picked up and used by the backend.
+And you can also attach data
+to your outgoing requests, like for example
+a new grocery item that should be stored in the database.
+
+
+->That could be data attached to a request sent
+from the frontend to the backend.
+Now when the backend then is done handling the request
+it will send back a response, which then in turn can be used
+by the frontend to update the UI.
+
+->And that response may include headers.
+So metadata again, and also a body.
+So data that is generated
+by the backend and that's then sent back
+from the backend to the frontend through the response.
+So that's a first overview of how HTTP works.
+
+->flutter App:-
+ 1.Runs on the user's device/mobile phone.
+ 2.Data is only stored localy.
+ 3. Other users have no access to it.
+
+   /\
+    | communication via HTTP requests
+   \/
+
+->Backend:-
+    1.Runs on some server , somewhere "in the internet".
+    2.Data is stored in a central, remote place(e.g., Sql, DBMS).
+    3.App users from all over the world can interact with same data.
+
+Link: https://developer.mozilla.org/en-US/docs/Web/HTTP    

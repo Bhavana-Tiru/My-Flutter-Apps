@@ -1,0 +1,21 @@
+There isn't a built-in widget called PopScope in Flutter. However, it seems you might be referring to the PopScope widget used in the Riverpod library. The purpose of PopScope in Riverpod is somewhat different from WillPopScope in Flutter.
+
+Here's the difference between the two:
+
+1.WillPopScope:
+
+WillPopScope is a widget provided by Flutter to intercept and handle system-level back button presses, such as the Android device's back button or the back navigation gesture on iOS.
+It allows you to specify a callback function (onWillPop) that will be called when the user attempts to pop the current route.
+You return a Future<bool> from onWillPop to indicate whether the pop action should be allowed (true) or prevented (false).
+
+2.PopScope (in Riverpod):
+
+PopScope is a concept in Riverpod that allows you to execute code when a route is popped from the navigation stack.
+It doesn't directly correspond to a specific widget like WillPopScope.
+Instead, you would typically use Riverpod's state management to handle changes in your application's state when a route is popped.
+In summary, while both WillPopScope and PopScope involve handling route popping in Flutter applications, they serve different purposes and are used in different contexts. WillPopScope is used to intercept back button presses and navigation pops, while PopScope (in Riverpod) doesn't directly correspond to a widget but rather to a concept related to state management during route popping.
+
+
+
+
+

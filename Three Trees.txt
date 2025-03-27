@@ -1,0 +1,76 @@
+These are invisible .
+Three Trees are:
+    1.Widget Trees:- Combination of widget in code
+
+    *Flutter takes the Widgets tree and translates it into Element Tree.
+    
+    ex: Column(), Todoiteam('A'),
+
+
+
+    2.Element Tree : In-memory representation of uor widgets.
+    ->And Flutter creates these extra element objects in memory to be able to efficiently determine required UI updates.
+    
+    -> when a widget is first encountered
+    and its build method is called for the first time
+    Flutter will thereafter create a fitting element object
+    
+    ->it only creates new elements
+    if you added new widgets, or it removes elements
+    from the elementary, if widgets were removed,
+    for example because of some conditional code.
+    
+    ->So elements are actually reused if possible.
+    They are not recreated all the time.
+    They are created initially when
+    a widget's build() method is called for the first time,
+    but for a subsequent cause of a
+    widget's build method elements are instead reused.
+    and store that in memory.
+
+    ex: Column Element, Todoiteam Element 
+
+    3.Render Tree:
+    ->element tree that's then used
+    to determine which UI should actually be rendered
+    on the screen.
+    
+    And that's where the render tree comes into play.
+
+    ->It is the visible UI building blocks. Things we see on screen.
+
+    ->It re-renders some parts of UI when UI updates are needed.
+
+    ->Flutter checks the element tree and reuses existing elements as needed. And then thereafter it compares the new element tree to the old element tree.
+
+    ->And if there are any differences,those differences are applied to the render tree and the UI is updated. But, of course, Flatter will not re-render the entire screen just because one tiny part of it needs to be updated.
+
+    Data base storing:
+
+    var :
+    1.Creates a new list object in memory and atore address to new object in new variable.
+            ->ex: var users=['max'] --> Device Memory: 0x21d36e0(address).
+    
+    2. If we override:
+    -> users=['Max',"Manu"] : Creates a new list object in memory and store address to new object in existing variable.
+    ->new address ex:0x53e44f1  
+
+    3.users.add('Kanu'): Appends a new string to existing list in memory - Address and variable remain unchanged.
+
+    final:
+    1. final users=['Max'], users=['Max', 'Manu'] :we are not allowed to reassign the variable , they can't get new address that they should store. 
+        They can't store new values. But we can edit existing values in memory.
+    
+    const:
+    1. with const wee can't assign value or edit value . 
+    2.While editing a value during code it will not show error but in debug console we will get error saying " I can't add to an unmodifiable list".
+        you are telling Dart that it's not just final, but this value also can't be manipulated
+
+An Alternative Navigation Pattern: Using Named Routes
+    ->Recommended navigation approach: Pushing and popping MaterialPageRoute objects to load different screens.
+      There also exists an alternative approach, though - you can assign names to routes and load your routes via those names. However, that approach is not recommended (for most apps).
+
+     -> link: https://docs.flutter.dev/development/ui/navigation#using-named-routes
+
+
+

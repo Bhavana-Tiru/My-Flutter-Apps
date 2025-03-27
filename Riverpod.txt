@@ -1,0 +1,95 @@
+Riverpod:   
+    ->With that riverpod package installed, you can create a so-called provider,
+        which is some kind of object created based on a class that is provided by the riverpod package.
+    ->Provide a potentially dynamic value and it can also provide methods
+        that may change that value in the end.
+    ->any widgets, you can set up a consumer that is connected to the provider and it will be connected automatically
+        by the riverpod package.
+    ->And in that consumer widget, you can then listen to changes through that provider value or even trigger those changes
+        by calling those methods that might be provided by the provider.       
+    ->Riverpod is a state management solution for Flutter applications, developed by the same team behind the popular Flutter state management library, Provider. 
+    Install:  flutter pub add flutter_riverpod.
+
+ Creating a Provider:
+ ->import :-import 'package:flutter_riverpod/flutter_riverpod.dart';
+ ->we can add a provider by using this provider clause that is provided by Flutter_riverpod.
+    i.e., Provider();
+ ->Now instantiating this provider clause will create such a provider object,
+    which we then can listen to from inside our widgets and we should therefore store this object
+    in some variable so that we do store this object and we can access this object later.
+ ->it needs at least one parameter, one positional parameter and that parameter actually is of type function. 
+    It's a function which will receive a so-called ProviderRef object.    
+
+ Now in Tabs Widget:
+ -> Import flutter_riverpod and Provide class in Tabs class.
+ -> and change TabsScreen StatefulWidget to ConsumerStatefulWidget.
+ -> ConsumerStatefulWidget, which is basically a StatefulWidget provided by this Riverpod package
+    which has some added functionalities that allow us to listen to our providers and to changes in those provider values. 
+ -> If it has StatelessWidget we replace it with ConsumerWidget.
+ ->We should change _TabsScreen Widget and createState() State to ConsumerState<TabsScreen>
+
+
+ Eg: class TabsScreen extends ConsumerStatefulWidget {
+        const TabsScreen({super.key});
+
+        @override
+        ConsumerState<TabsScreen> createState() => _TabsScreen();
+        }
+
+        class _TabsScreen extends ConsumerState<TabsScreen> { }   
+        
+ ->A ref property available that allows us to set up listeners to our providers.
+ ->So this ref property is added by riverpod and it is available because we are extending consumer state here in this state class.  
+ -> Ref uses utility methods :- 
+    1.read() :- get data from our provider once, 
+    2.watch();- to set up a listeners that will make sure that the build method executes again as the data changes.
+        Riverpod insist to use watch often than read even if u technically only need to read data once because this way ,
+        if you ever change ur logic , u can't run into unintended bugs where u forgot to replace a read with a watch.
+     -> watch needs a argument provider 
+     Eg:final meals (<T in syntax>)=ref.watch(mealsProvider); in TabsScreen
+
+        In meals_provider.dart:-
+        final mealsProvider = Provider((ref) {
+            return dummyMeals;
+        }); 
+ -> At main.dart inside runApp wrap the widget with ProviderScope.
+    eg:-void main() {
+            runApp(const ProviderScope(child:  App()));
+        }
+
+For creating favoites Provider:-
+->use dont use Provider we use StateNotifierProvider();
+    eg:final favoriateMealsProvider= StateNotifierProvider((ref) => null);
+->that is optimized for data that can change. Now this StateNotifierProvider class works together with another class, 
+    just as stateful widgets work together with state objects you could say. 
+->that other class with which the StateNotifierProvider works together 
+    is the StateNotifier class, which is also provided by riverpod.
+->  one important thing you must keep in mind related to that value that's managed by this notifier
+   is that you must never edit that value. And you might recall from earlier in the course
+   that in the end when you create objects, those objects are stored in memory
+   and they can be replaced with new objects which have a new address in memory,
+   this approach is not allowed when using StateNotifier, you're not allowed to edit an existing value in memory,
+   instead you must always create a new one. That's simply a pattern enforced by this package.
+   Therefore, we're not allowed to reach out to this list and call add or remove as we did before.
+   This would not be allowed. Instead we have to replace it.
+
+->there is this globally available state property.
+
+This property is made available by the StateNotifier class.
+
+Now this state property holds your data,
+
+so in this case a list of meals.
+
+And, again, calling add or remove on that
+
+would not be allowed.
+
+Instead, you have to reassign it
+
+by using the assignment operator to a new list.
+
+So a new list, no matter if you are adding a meal
+
+or removing a meal.
+                                  

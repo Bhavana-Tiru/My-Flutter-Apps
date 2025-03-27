@@ -1,0 +1,138 @@
+
+Animation sets the state and updates the UI all the time as 
+ long as the animation is playing. So, that's why we should always use some state
+ behind the scenes and re-execute the build method.
+
+Explicit:
+1.you build and control the entire animation.
+2.More control but also more complexity.
+3.Can often be avoided (by using pre-built Widgets).
+4. if we are adding an explicit animation to a widget u must add
+     it to the state object of that widget.
+5. It should be assigned in init method before the build method.
+6.To tell dart that the property doesn't have a value initially when the class is created
+ we use special keyword called LATE.
+7.LATE (late):-This tells Dart that this in the end is a variable which
+  will have a value as soon as it's being used the first time, but not yet when the class is created.   
+
+
+  Example:
+
+  class _CategoriesScreenState extends State<CategoriesScreen>
+    with SingleTickerProviderStateMixin {
+  //with:- A keyword which allows you to add a so-called Mixin to a class
+  // which you can think of a another class being merged into this class behind the scenes
+  // and offering certain features to this class therefore.
+
+  //SingleTickerProviderStateMixin:- provides various features that are needed by the flutter animation system.
+  // If multiple animation controller are present we should use TickerProviderStateMixin.
+  late AnimationController _animationController;
+  //AnimationController:- A controller for an animation.
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+      lowerBound: 0,
+      upperBound: 1,
+      //default values and the values should be set to the animation
+    );
+    //vsync: sync parameter is responsible for making sure that this animation
+    //executes for every frame. So, typically 60 times per second.
+    _animationController.forward();
+    //starts the animation till the end until we use stop method.
+    // we can also use repeat() to repeat it and it always restart it once it's done.
+  }
+
+  @override
+  void dispose() {
+    //clean up work
+    _animationController
+        .dispose(); //AnimationController will be removed once this widget here is removed to make sure we don't cause memory loss.
+    super.dispose();
+  }
+
+  void _selectCategory(BuildContext context, Category category) {
+    final filteredMeals = widget.availableMeales
+        .where((meal) => meal.categories.contains(category.id))
+        .toList(); // whole return true or false
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (ctx) => MealScreen(
+          meals: filteredMeals,
+          title: category.title,
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return AnimatedBuilder(
+        animation: _animationController,
+        child: GridView(
+          padding: const EdgeInsets.all(24),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 3 / 2,
+            crossAxisSpacing: 20,
+            mainAxisSpacing: 20,
+          ),
+          children: [
+            // alternative way of map = availableCategories.map((category)=>CategoryGridIteam(category: category).toList())
+            for (final category in availableCategories)
+              CategoryGridIteam(
+                category: category,
+                onSelectCategory: () {
+                  _selectCategory(context, category);
+                },
+              ),
+          ],
+        ),
+        builder: (context, child) => Padding(
+              padding:
+                  EdgeInsets.only(top: 100 - _animationController.value * 100),
+              child: child,
+            )
+        //value:-value in _animatedController which is lowerBound: 0(0*100=0), upperBound: 1 (1*100=100),
+        //only the Padding widget is re-executed not the GridView
+        );
+  }
+}
+
+//We can listen and update the parts of UI by using AnimatedBuilder given by flutter
+//this would allow you to improve the performance of an animation by making sure that not all the items
+//that are part of the animated item are rebuilt and reevaluated as long as the animation is running.  
+
+
+Implicit:
+Flutter controls the animation, and does a lot of work for you.
+2.Less complexity and less complexity.
+3.Use pre-built animation widgets as often as possible.
+
+Example:
+icon: AnimatedSwitcher(
+              //It will create the animation and start the animation.
+              // And it will start the animation whenever the child changes.
+              // So it will automatically detect this and play the animation as the child updates.
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (child, animation) {
+                //child here is Icon
+                //animation is lowerBound:0, upperBound: 1,
+                return RotationTransition(
+                  turns: Tween(begin: 0.8, end: 1.0).animate(animation),
+                  //or Tween<double>(enum)(begin: 0.5, end: 1)
+                  child: child,
+                );
+              },
+              child: Icon(
+                isFavoriate ? Icons.favorite_sharp : Icons.favorite_border,
+                key: ValueKey(isFavoriate),
+              ),
+            )

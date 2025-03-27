@@ -13,7 +13,7 @@ out that push notification to all those devices.
 If you built your own custom backend
 you did that by writing code anyway
 so then you could add more code to it to also
-use a backend Firebase Stk to send such a message.
+use a backend Firebase Sdk to send such a message.
 
 
 

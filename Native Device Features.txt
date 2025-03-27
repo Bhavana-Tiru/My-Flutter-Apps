@@ -1,0 +1,41 @@
+NATIVE DEVICE FEATURES:
+
+1.Working with the Camera, 
+2.User Location, Displaying a Map.
+3.Storing Data on the Device.
+
+Image_picker:
+    ->picking images from the image library, and taking new pictures with the camera.
+    ->Command: flutter pub add image_picker.
+    
+->Add the following keys to your Info.plist file, located in <project root>/ios/Runner/Info.plist:
+->NSPhotoLibraryUsageDescription - describe why your app needs permission for the photo library.
+     This is called Privacy - Photo Library Usage Description in the visual editor.
+     This permission will not be requested if you always pass false for requestFullMetadata, but App Store policy requires including the plist entry.
+->NSCameraUsageDescription - describe why your app needs access to the camera. 
+    This is called Privacy - Camera Usage Description in the visual editor.
+->NSMicrophoneUsageDescription - describe why your app needs access to the microphone, if you intend to record videos. 
+    This is called Privacy - Microphone Usage Description in the visual editor.
+
+void _takePicture() {
+    final imagePicker = ImagePicker();
+    imagePicker.pickImage(source: ImageSource.camera,maxWidth: 600,);
+  }
+
+  ->ImagePicker:Is a Widget used to pick a image .
+  ->.pickImage: method is used to pick a image.
+        Future<XFile?> pickImage({
+        required ImageSource source,(source: ImageSource(it is a enum).camera)
+        double? maxWidth,
+        double? maxHeight,
+        int? imageQuality,
+        CameraDevice preferredCameraDevice = CameraDevice.rear,
+        bool requestFullMetadata = true,
+        })
+        ->Future<XFile?>:Instead it is simply a file that contains the image.
+            An XFile simply is a type that represents that file.
+            So since it's a future, we could use then here to get hold to that file that is eventually yielded.
+
+Location(https://pub.dev/packages/location):
+->Command: flutter pub add location. 
+          import:import 'package:location/location.dart';
