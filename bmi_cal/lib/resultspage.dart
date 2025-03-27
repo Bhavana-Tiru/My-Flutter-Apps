@@ -28,10 +28,10 @@ class Resultpage extends StatelessWidget {
               const SizedBox(
                 height: 30,
               ),
-              Image.asset('assets/images/meter.png'),
-              const SizedBox(
-                height: 30,
-              ),
+              // Image.asset('assets/images/meter.png'),
+              // const SizedBox(
+              //   height: 30,
+              // ),
               if (totalbmi < 18.5)
                 Text(
                   " Your BMI is $totalbmi,indicating you are Underweight try to maintain a Healthy Weight. Emphasizes vegetables, fruits, whole grains, and fat-free or low-fat dairy products ",
